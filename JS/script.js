@@ -1,5 +1,15 @@
 let createButton = document.getElementById("create");
 
+if(localStorage.length>0){
+    var storedTitles = JSON.parse(localStorage.getItem("Titles"));
+    var storedText = JSON.parse(localStorage.getItem("Text"));
+    for(let i = 0; i < storedTitles.length; i++){
+     
+        createItem(storedTitles[i],storedText[i]);
+
+ }
+}
+
 function createItem(title, bodyText) {
   // call the main div with class accordion
   let acco = document.querySelector(".accordion");
@@ -8,8 +18,6 @@ function createItem(title, bodyText) {
   let accItem = document.createElement("div");
   accItem.classList.add("accordion-item");
   accItem.classList.add("m-3");
-
-  
 
   let accH2 = document.createElement("h2");
   accH2.classList.add("accordion-header");
@@ -47,31 +55,47 @@ function createItem(title, bodyText) {
 }
 
 createButton.addEventListener("click", function () {
-
-    
   let textArea = document.getElementById("text-area").value;
   let title = document.getElementById("title").value;
-  
-  
-  document.getElementById("text-area").value= '';
-  document.getElementById("title").value = '';
-  
 
+  document.getElementById("text-area").value = "";
+  document.getElementById("title").value = "";
 
-let titles = document.getElementsByClassName('accordion-button');
-let st = [];
-if (titles.length > 0){
-    for (let i = 0; i <titles.length ; i++){
-        st.push(titles[i].innerHTML);
+  let titles = document.getElementsByClassName("accordion-button");
+  let st = [];
+  if (titles.length > 0) {
+    for (let i = 0; i < titles.length; i++) {
+      st.push(titles[i].innerHTML);
     }
-}
+  }
 
-
-if ( title != "" && !st.includes(title)){
-    createItem(title,textArea);
-    console.log(st)
-}
-
-
+  if (title != "" && !st.includes(title)) {
+    dataLocalStorage(title,textArea);
+    
+  }
 });
+
+function dataLocalStorage(titlesStorage,textArea) {
+  //storing array in localStorage
+  if (localStorage.length == 0) {
+    a = [titlesStorage]
+    b = [textArea]
+    localStorage.setItem("Titles", JSON.stringify(a));
+    localStorage.setItem("Text", JSON.stringify(b));
+
+
+  } else {
+    var storedTitles = JSON.parse(localStorage.getItem("Titles"));
+    var storedText = JSON.parse(localStorage.getItem("Text"));
+
+    storedTitles.push(titlesStorage);
+    storedText.push(textArea);
+
+    localStorage.setItem("Titles", JSON.stringify(storedTitles));
+    localStorage.setItem("Text", JSON.stringify(storedText));
+
+     
+
+  }
+}
 
