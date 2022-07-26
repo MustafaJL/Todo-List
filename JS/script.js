@@ -7,6 +7,9 @@ function createItem(title, bodyText) {
   // create accordion-item div
   let accItem = document.createElement("div");
   accItem.classList.add("accordion-item");
+  accItem.classList.add("m-3");
+
+  
 
   let accH2 = document.createElement("h2");
   accH2.classList.add("accordion-header");
@@ -44,12 +47,30 @@ function createItem(title, bodyText) {
 }
 
 createButton.addEventListener("click", function () {
+
+    
   let textArea = document.getElementById("text-area").value;
   let title = document.getElementById("title").value;
-  createItem(title, textArea);
-  console.log(textArea)
-//   document.getElementById("text-area").value= '';
-//   document.getElementById("title").value = '';
+  
+  
+  document.getElementById("text-area").value= '';
+  document.getElementById("title").value = '';
+  
+
+
+let titles = document.getElementsByClassName('accordion-button');
+let st = [];
+if (titles.length > 0){
+    for (let i = 0; i <titles.length ; i++){
+        st.push(titles[i].innerHTML);
+    }
+}
+
+
+if ( title != "" && !st.includes(title)){
+    createItem(title,textArea);
+    console.log(st)
+}
 
 
 });
