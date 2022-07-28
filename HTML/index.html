@@ -18,23 +18,22 @@
             <a class="navbar-brand text-light" href="#">
                 <i class="bi bi-card-checklist"></i>
                 Todo App
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav"></div>
-            </div>
+            </a>          
         </div>
     </nav>
     <!-- End Navbar -->
 
-    <div class="container-fluid d-flex mt-3 p-3 justify-content-evenly">
+    <div class="container-fluid d-flex mt-3 p-3 justify-content-lg-evenly">
         <div class="col-7">
             <section>
-                <div class="top">
+                <div class="top d-flex justify-content-between">
                     <h1>ToDo List</h1>
+                    <div>
+                        
+                        <button class="btn btn-warning m-1" id="task-num">                            
+                        </button>
+                        
+                    </div>
                 </div>
 
                 <div class="mb-3 mt-3">
@@ -52,7 +51,7 @@
         </div>
 
         <div class="col-4 info">
-            <div>
+         
                 <form action="">
                     <div class="m-2">
                         <input type="text" class="form-control" placeholder="Enter Task Name" name="" id="title" />
@@ -66,8 +65,10 @@
                         </button>
                     </div>
                 </form>
-            </div>
+           
+             
         </div>
+
     </div>
 
     <script src="/JS/script.js"></script>

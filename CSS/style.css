@@ -10,15 +10,18 @@ section{
 .info{
     border: 1px solid #333;
     border-radius: 5px;
-    height: 500px;
-    max-height: 500px;
+    
+    max-height: 600px;
 }
 
 #text-area{
     min-height: 100px;
-    max-height: 380px;
+    max-height: 320px;
 }
 
 .top{
     flex: 1;
+    
 }
+
+
