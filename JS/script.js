@@ -208,3 +208,14 @@ function Delete(title){
 
 
 }
+
+// delete all tasks from local storage
+
+let all = document.getElementById('delete-all');
+
+all.addEventListener('click', () => {
+
+  localStorage.clear();
+
+
+});

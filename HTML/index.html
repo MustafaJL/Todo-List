@@ -23,22 +23,29 @@
     </nav>
     <!-- End Navbar -->
 
-    <div class="container-fluid d-flex mt-3 p-3 justify-content-lg-evenly">
+    <div class="container-fluid d-flex mt-3 p-3 justify-content-evenly flex-lg-row flex-column-reverse align-items-lg-start align-items-center">
         <div class="col-7">
-            <section>
+            <section class="mt-lg-0 mt-3">
                 <div class="top d-flex justify-content-between">
-                    <h1>ToDo List</h1>
-                    <div>
+                    <h1 class="p-1">Todo</h1>
+                    <div >
                         
-                        <button class="btn btn-warning m-1" id="task-num">                            
-                        </button>
+                        
+                        <form>
+                            <button class="btn btn-secondary p-1 m-1 rounded-pill" id="task-num">                            
+                            </button>
+                            <button class="btn btn-danger p-1 m-1 rounded-pill" id="delete-all" type="submit">  
+                                <i class="bi bi-trash"></i>   
+                                delete all                       
+                            </button>
+                        </form>
                         
                     </div>
                 </div>
 
                 <div class="mb-3 mt-3">
                     <div class="name">
-                        <p class="text-muted">Task to do</p>
+                        <p class="text-muted fs-4 p-1">Tasks do</p>
                     </div>
                 </div>
 
