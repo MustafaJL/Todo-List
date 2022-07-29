@@ -133,7 +133,7 @@ createButton.addEventListener("click", function () {
   // check over array if the new task does not already exist it will be added
   if (title != "" && !st.includes(title) && textArea != "") {
      let date = Date.call().slice(0,24);
-    Create(title, textArea,date);
+    Create(title.toUpperCase(), textArea,date);
        
   }
   
@@ -144,6 +144,7 @@ let deleteTask = document.getElementsByClassName('delete');
 for (let i = 0; i < deleteTask.length; i++){
     deleteTask[i].onclick = function(){
     let title = this.parentElement.children[0].children[0].children[0].innerHTML.slice(3);
+    console.log(title)
     let confirmStatus = confirm('Are You Sure, You Want to Delete This Task')
     if(confirmStatus){
     Delete(title);
