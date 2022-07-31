@@ -45,12 +45,11 @@ function createItem(i, title, bodyText, date) {
   accButton.setAttribute("data-bs-target", `#panelsStayOpen-collapse${title}`);
   accButton.setAttribute("aria-expanded", "true");
   accButton.setAttribute("aria-controls", `panelsStayOpen-collapse${title}`);
-  accButton.appendChild(document.createTextNode(`#${i+1}`));
-  let nameSpan = document.createElement('span');
+  accButton.appendChild(document.createTextNode(`#${i + 1}`));
+  let nameSpan = document.createElement("span");
   nameSpan.innerHTML = `${title}`;
-  nameSpan.classList.add('ms-3')
+  nameSpan.classList.add("ms-3");
   accButton.appendChild(nameSpan);
-  
 
   // create div that hold accordion body div
   let bodyHolder = document.createElement("div");
@@ -125,7 +124,6 @@ function createItem(i, title, bodyText, date) {
 }
 
 createButton.addEventListener("click", function () {
-  
   // get the value of text-area and title in the form
   let textArea = document.getElementById("text-area").value;
   let title = document.getElementById("title").value.toUpperCase();
@@ -136,27 +134,27 @@ createButton.addEventListener("click", function () {
   // retrieve all values of each accordion-button divs
   let titles = document.getElementsByClassName("accordion-button");
 
-  
   let st = [];
   if (titles.length > 0) {
     for (let i = 0; i < titles.length; i++) {
       st.push(titles[i].children[0].innerHTML.toUpperCase());
-      console.log(st[i])
     }
   }
 
   // check over array if the new task does not already exist it will be added
   if (title != "" && !st.includes(title) && textArea != "") {
     let date = Date.call().slice(0, 24);
-    console.log(title)
-    console.log(st)
     Create(title.toUpperCase(), textArea, date);
-  }
-  else if (title != "" && st.includes(title) && textArea != ""){
+  } else if (
+    title != "" &&
+    st.includes(title) &&
+    textArea != "" &&
+    this.children[1].innerHTML == "Update"
+  ) {
     let indexOfTitle = st.indexOf(title);
 
     let modifiedDate = Date.call().slice(0, 24);
-    Edit(textArea,indexOfTitle,modifiedDate);
+    Edit(textArea, indexOfTitle, modifiedDate);
   }
 });
 
@@ -164,7 +162,8 @@ let deleteTask = document.getElementsByClassName("delete");
 for (let i = 0; i < deleteTask.length; i++) {
   deleteTask[i].onclick = function () {
     let title =
-    this.parentElement.children[0].children[0].children[0].children[0].innerHTML;
+      this.parentElement.children[0].children[0].children[0].children[0]
+        .innerHTML;
     console.log(title);
     let confirmStatus = confirm("Are You Sure, You Want to Delete This Task");
     if (confirmStatus) {
@@ -233,9 +232,9 @@ function Delete(title) {
 let all = document.getElementById("delete-all");
 
 all.addEventListener("click", () => {
-  let valid = confirm('Are You Sure You Want to Delete All Tasks ?');
-  if(valid){
-  localStorage.clear();
+  let valid = confirm("Are You Sure You Want to Delete All Tasks ?");
+  if (valid) {
+    localStorage.clear();
   }
 });
 
@@ -244,7 +243,8 @@ let edit = document.getElementsByClassName("edit");
 for (let i = 0; i < edit.length; i++) {
   edit[i].addEventListener("click", function () {
     let title =
-      this.parentElement.children[0].children[0].children[0].children[0].innerHTML;
+      this.parentElement.children[0].children[0].children[0].children[0]
+        .innerHTML;
     let textArea =
       this.parentElement.children[0].children[1].children[0].innerHTML.split(
         "<"
@@ -257,21 +257,18 @@ for (let i = 0; i < edit.length; i++) {
     toggle.children[0].removeAttribute("class");
     toggle.children[0].setAttribute("class", "bi bi-pencil");
     toggle.children[1].innerHTML = "Update";
-    let titleInput = document.getElementById('title');
-   titleInput.setAttribute('disabled','');
+    let titleInput = document.getElementById("title");
+    titleInput.setAttribute("disabled", "");
   });
 }
 
-function Edit(textArea,indexOfTitle,modifiedDate){
+function Edit(textArea, indexOfTitle, modifiedDate) {
+  var storedTitles = JSON.parse(localStorage.getItem("Titles"));
+  var storedText = JSON.parse(localStorage.getItem("Text"));
+  var storedDate = JSON.parse(localStorage.getItem("Created"));
+  storedText[indexOfTitle] = textArea;
+  storedDate[indexOfTitle] = modifiedDate;
 
-   
-   var storedTitles = JSON.parse(localStorage.getItem("Titles"));
-   var storedText = JSON.parse(localStorage.getItem("Text"));
-   var storedDate = JSON.parse(localStorage.getItem("Created"));
-    storedText[indexOfTitle] = textArea
-    storedDate[indexOfTitle] = modifiedDate
-
-   localStorage.setItem("Text", JSON.stringify(storedText));
-   localStorage.setItem("Created", JSON.stringify(storedDate));
-
+  localStorage.setItem("Text", JSON.stringify(storedText));
+  localStorage.setItem("Created", JSON.stringify(storedDate));
 }
