@@ -128,7 +128,7 @@ createButton.addEventListener("click", function () {
   
   // get the value of text-area and title in the form
   let textArea = document.getElementById("text-area").value;
-  let title = document.getElementById("title").value;
+  let title = document.getElementById("title").value.toUpperCase();
   // emptying the input fields
   document.getElementById("text-area").value = "";
   document.getElementById("title").value = "";
@@ -140,14 +140,16 @@ createButton.addEventListener("click", function () {
   let st = [];
   if (titles.length > 0) {
     for (let i = 0; i < titles.length; i++) {
-      st.push(titles[i].children[0].innerHTML);
-      
+      st.push(titles[i].children[0].innerHTML.toUpperCase());
+      console.log(st[i])
     }
   }
 
   // check over array if the new task does not already exist it will be added
   if (title != "" && !st.includes(title) && textArea != "") {
     let date = Date.call().slice(0, 24);
+    console.log(title)
+    console.log(st)
     Create(title.toUpperCase(), textArea, date);
   }
   else if (title != "" && st.includes(title) && textArea != ""){
@@ -255,11 +257,14 @@ for (let i = 0; i < edit.length; i++) {
     toggle.children[0].removeAttribute("class");
     toggle.children[0].setAttribute("class", "bi bi-pencil");
     toggle.children[1].innerHTML = "Update";
+    let titleInput = document.getElementById('title');
+   titleInput.setAttribute('disabled','');
   });
 }
 
 function Edit(textArea,indexOfTitle,modifiedDate){
 
+   
    var storedTitles = JSON.parse(localStorage.getItem("Titles"));
    var storedText = JSON.parse(localStorage.getItem("Text"));
    var storedDate = JSON.parse(localStorage.getItem("Created"));
