@@ -1,35 +1,30 @@
 let createButton = document.getElementById("create");
-let num_tasks = document.getElementById('task-num');
+let num_tasks = document.getElementById("task-num");
 
 // view data in the table
 if (localStorage.length > 0) {
-  
   var storedTitles = JSON.parse(localStorage.getItem("Titles"));
   var storedText = JSON.parse(localStorage.getItem("Text"));
   var storedDate = JSON.parse(localStorage.getItem("Created"));
   for (let i = 0; i < storedTitles.length; i++) {
-    if(storedTitles[i] === null || storedTitles[i] === ''){
-        continue
+    if (storedTitles[i] === null || storedTitles[i] === "") {
+      continue;
+    } else {
+      createItem(i, storedTitles[i], storedText[i], storedDate[i]);
     }
-    else{
-        createItem(i,storedTitles[i], storedText[i],storedDate[i]);
-    }
-    
   }
   let length = storedTitles.length;
-  num_tasks.innerHTML = `Number of Tasks : ${length}`
-}
-else{
-  num_tasks.innerHTML = `Number of Tasks : 0`
+  num_tasks.innerHTML = `Number of Tasks : ${length}`;
+} else {
+  num_tasks.innerHTML = `Number of Tasks : 0`;
 }
 
-function createItem(i,title, bodyText, date) {
+function createItem(i, title, bodyText, date) {
   // call the main div with class accordion
   let acco = document.querySelector(".accordion");
 
   let top = document.createElement("div");
-  top.classList.add('top')
-
+  top.classList.add("top");
 
   // create accordion-item div
   let accItem = document.createElement("div");
@@ -37,7 +32,6 @@ function createItem(i,title, bodyText, date) {
   accItem.classList.add("m-3");
   accItem.classList.add("d-flex");
   accItem.classList.add("justify-content-between");
-
 
   let accH2 = document.createElement("h2");
   accH2.classList.add("accordion-header");
@@ -51,7 +45,12 @@ function createItem(i,title, bodyText, date) {
   accButton.setAttribute("data-bs-target", `#panelsStayOpen-collapse${title}`);
   accButton.setAttribute("aria-expanded", "true");
   accButton.setAttribute("aria-controls", `panelsStayOpen-collapse${title}`);
-  accButton.innerHTML = `#${i+1} ${title}`;
+  accButton.appendChild(document.createTextNode(`#${i+1}`));
+  let nameSpan = document.createElement('span');
+  nameSpan.innerHTML = `${title}`;
+  nameSpan.classList.add('ms-3')
+  accButton.appendChild(nameSpan);
+  
 
   // create div that hold accordion body div
   let bodyHolder = document.createElement("div");
@@ -64,38 +63,50 @@ function createItem(i,title, bodyText, date) {
   // create accordion body div
   let accBody = document.createElement("div");
   accBody.classList.add("accordion-body");
-  let dateText = document.createElement('div');
-  dateText.classList.add('date')
-  dateText.classList.add('text-muted')
-  dateText.classList.add('fw-bold')
-  
+  let dateText = document.createElement("div");
+  dateText.classList.add("date");
+  dateText.classList.add("text-muted");
+  dateText.classList.add("fw-bold");
 
   accBody.appendChild(document.createTextNode(bodyText));
   dateText.innerHTML = `Created in : ${date}`;
   accBody.appendChild(dateText);
-  
-  
+
+  // create edit button
+
+  let editButton = document.createElement("button");
+  editButton.classList.add("btn");
+  editButton.classList.add("btn-success");
+  editButton.classList.add("edit");
+  editButton.classList.add("ms-1");
+  editButton.classList.add("me-1");
+
+  let editIcon = document.createElement("i");
+  editIcon.classList.add("bi");
+  editIcon.classList.add("bi-trash");
+  editButton.appendChild(editIcon);
+
+  let editText = document.createTextNode(" Edit");
+  editButton.appendChild(editText);
 
   // create delete button
 
   let deleteButton = document.createElement("button");
-  deleteButton.classList.add('btn');
-  deleteButton.classList.add('btn-danger');
+  deleteButton.classList.add("btn");
+  deleteButton.classList.add("btn-danger");
   deleteButton.classList.add("delete");
-  deleteButton.classList.add('ms-1');
-  deleteButton.classList.add('me-1');
+  deleteButton.classList.add("ms-1");
+  deleteButton.classList.add("me-1");
 
-  let deleteIcon = document.createElement('i');
-  deleteIcon.classList.add('bi');
-  deleteIcon.classList.add('bi-trash');
+  let deleteIcon = document.createElement("i");
+  deleteIcon.classList.add("bi");
+  deleteIcon.classList.add("bi-trash");
   deleteButton.appendChild(deleteIcon);
 
-  let delText = document.createTextNode(' Delete');
-  deleteButton.appendChild(delText)
-  
-  
+  let delText = document.createTextNode(" Delete");
+  deleteButton.appendChild(delText);
 
-  // append button to h2 
+  // append button to h2
   accH2.appendChild(accButton);
   // append h2 to top
   top.appendChild(accH2);
@@ -105,15 +116,16 @@ function createItem(i,title, bodyText, date) {
   top.appendChild(bodyHolder);
   // append top to item
   accItem.appendChild(top);
+  // append button edit to item
+  accItem.appendChild(editButton);
   // append button  delete to item
   accItem.appendChild(deleteButton);
   // append item to main div
   acco.appendChild(accItem);
-
-  
 }
 
 createButton.addEventListener("click", function () {
+  
   // get the value of text-area and title in the form
   let textArea = document.getElementById("text-area").value;
   let title = document.getElementById("title").value;
@@ -121,102 +133,137 @@ createButton.addEventListener("click", function () {
   document.getElementById("text-area").value = "";
   document.getElementById("title").value = "";
 
- // retrieve all values of each accordion-button divs
+  // retrieve all values of each accordion-button divs
   let titles = document.getElementsByClassName("accordion-button");
+
+  
   let st = [];
   if (titles.length > 0) {
     for (let i = 0; i < titles.length; i++) {
-      st.push(titles[i].innerHTML);
+      st.push(titles[i].children[0].innerHTML);
+      
     }
   }
-  
+
   // check over array if the new task does not already exist it will be added
   if (title != "" && !st.includes(title) && textArea != "") {
-     let date = Date.call().slice(0,24);
-    Create(title.toUpperCase(), textArea,date);
-       
+    let date = Date.call().slice(0, 24);
+    Create(title.toUpperCase(), textArea, date);
   }
-  
+  else if (title != "" && st.includes(title) && textArea != ""){
+    let indexOfTitle = st.indexOf(title);
+
+    let modifiedDate = Date.call().slice(0, 24);
+    Edit(textArea,indexOfTitle,modifiedDate);
+  }
 });
 
-
-let deleteTask = document.getElementsByClassName('delete');
-for (let i = 0; i < deleteTask.length; i++){
-    deleteTask[i].onclick = function(){
-    let title = this.parentElement.children[0].children[0].children[0].innerHTML.slice(3);
-    console.log(title)
-    let confirmStatus = confirm('Are You Sure, You Want to Delete This Task')
-    if(confirmStatus){
-    Delete(title);
-    this.parentElement.remove()
-    let text = num_tasks.innerHTML
-    num_tasks.innerHTML = text.replace(text.slice(-1),parseInt(text[text.length-1])-1)
-
+let deleteTask = document.getElementsByClassName("delete");
+for (let i = 0; i < deleteTask.length; i++) {
+  deleteTask[i].onclick = function () {
+    let title =
+    this.parentElement.children[0].children[0].children[0].children[0].innerHTML;
+    console.log(title);
+    let confirmStatus = confirm("Are You Sure, You Want to Delete This Task");
+    if (confirmStatus) {
+      Delete(title);
+      this.parentElement.remove();
+      let text = num_tasks.innerHTML;
+      num_tasks.innerHTML = text.replace(
+        text.slice(-1),
+        parseInt(text[text.length - 1]) - 1
+      );
     }
-}}
+  };
+}
 
 // function for add data to local storge
-function Create(titlesStorage, textArea,date) {
-    
-    //storing array in localStorage
-    if (localStorage.length == 0) {
-     Title = [titlesStorage];
-      Text = [textArea];
-       Hist = [date];
-      localStorage.setItem("Titles", JSON.stringify(Title));
-      localStorage.setItem("Text", JSON.stringify(Text));
-      localStorage.setItem("Created", JSON.stringify(Hist));
-
-    } else {
-      var storedTitles = JSON.parse(localStorage.getItem("Titles"));
-      var storedText = JSON.parse(localStorage.getItem("Text"));
-      var storedDate = JSON.parse(localStorage.getItem('Created'))
-      storedTitles.push(titlesStorage);
-      storedText.push(textArea);
-      storedDate.push(date);
-
-      localStorage.setItem("Titles", JSON.stringify(storedTitles));
-      localStorage.setItem("Text", JSON.stringify(storedText));
-      localStorage.setItem("Created", JSON.stringify(storedDate));
-
-    }
-  }
-
-function Delete(title){
-
+function Create(titlesStorage, textArea, date) {
+  //storing array in localStorage
+  if (localStorage.length == 0) {
+    Title = [titlesStorage];
+    Text = [textArea];
+    Hist = [date];
+    localStorage.setItem("Titles", JSON.stringify(Title));
+    localStorage.setItem("Text", JSON.stringify(Text));
+    localStorage.setItem("Created", JSON.stringify(Hist));
+  } else {
     var storedTitles = JSON.parse(localStorage.getItem("Titles"));
     var storedText = JSON.parse(localStorage.getItem("Text"));
-    var storedDate = JSON.parse(localStorage.getItem('Created'))
-    let key = storedTitles.indexOf(title)
-  
-    delete storedTitles[key];
-    delete storedText[key];
-    delete storedDate[key];
+    var storedDate = JSON.parse(localStorage.getItem("Created"));
+    storedTitles.push(titlesStorage);
+    storedText.push(textArea);
+    storedDate.push(date);
 
-    storedTitles = storedTitles.filter(element => {
-        return element !== null;
-      });
-    storedText = storedText.filter(element => {
-        return element !== null;
-      });
-
-    storedDate = storedDate.filter(element => {
-        return element != null;
-    });
     localStorage.setItem("Titles", JSON.stringify(storedTitles));
     localStorage.setItem("Text", JSON.stringify(storedText));
     localStorage.setItem("Created", JSON.stringify(storedDate));
+  }
+}
 
+function Delete(title) {
+  var storedTitles = JSON.parse(localStorage.getItem("Titles"));
+  var storedText = JSON.parse(localStorage.getItem("Text"));
+  var storedDate = JSON.parse(localStorage.getItem("Created"));
+  let key = storedTitles.indexOf(title);
 
+  delete storedTitles[key];
+  delete storedText[key];
+  delete storedDate[key];
+
+  storedTitles = storedTitles.filter((element) => {
+    return element !== null;
+  });
+  storedText = storedText.filter((element) => {
+    return element !== null;
+  });
+
+  storedDate = storedDate.filter((element) => {
+    return element != null;
+  });
+  localStorage.setItem("Titles", JSON.stringify(storedTitles));
+  localStorage.setItem("Text", JSON.stringify(storedText));
+  localStorage.setItem("Created", JSON.stringify(storedDate));
 }
 
 // delete all tasks from local storage
 
-let all = document.getElementById('delete-all');
+let all = document.getElementById("delete-all");
 
-all.addEventListener('click', () => {
-
+all.addEventListener("click", () => {
   localStorage.clear();
-
-
 });
+
+let edit = document.getElementsByClassName("edit");
+
+for (let i = 0; i < edit.length; i++) {
+  edit[i].addEventListener("click", function () {
+    let title =
+      this.parentElement.children[0].children[0].children[0].children[0].innerHTML;
+    let textArea =
+      this.parentElement.children[0].children[1].children[0].innerHTML.split(
+        "<"
+      )[0];
+
+    document.getElementById("text-area").value = textArea;
+    document.getElementById("title").value = title;
+
+    let toggle = document.getElementById("create");
+    toggle.children[0].removeAttribute("class");
+    toggle.children[0].setAttribute("class", "bi bi-pencil");
+    toggle.children[1].innerHTML = "Update";
+  });
+}
+
+function Edit(textArea,indexOfTitle,modifiedDate){
+
+   var storedTitles = JSON.parse(localStorage.getItem("Titles"));
+   var storedText = JSON.parse(localStorage.getItem("Text"));
+   var storedDate = JSON.parse(localStorage.getItem("Created"));
+    storedText[indexOfTitle] = textArea
+    storedDate[indexOfTitle] = modifiedDate
+
+   localStorage.setItem("Text", JSON.stringify(storedText));
+   localStorage.setItem("Created", JSON.stringify(storedDate));
+
+}
