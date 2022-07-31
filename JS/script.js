@@ -231,7 +231,10 @@ function Delete(title) {
 let all = document.getElementById("delete-all");
 
 all.addEventListener("click", () => {
+  let valid = confirm('Are You Sure You Want to Delete All Tasks ?');
+  if(valid){
   localStorage.clear();
+  }
 });
 
 let edit = document.getElementsByClassName("edit");
