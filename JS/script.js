@@ -6,6 +6,7 @@ if (localStorage.length > 0) {
   var storedTitles = JSON.parse(localStorage.getItem("Titles"));
   var storedText = JSON.parse(localStorage.getItem("Text"));
   var storedDate = JSON.parse(localStorage.getItem("Created"));
+  
   for (let i = 0; i < storedTitles.length; i++) {
     if (storedTitles[i] === null || storedTitles[i] === "") {
       continue;
@@ -82,7 +83,7 @@ function createItem(i, title, bodyText, date) {
 
   let editIcon = document.createElement("i");
   editIcon.classList.add("bi");
-  editIcon.classList.add("bi-trash");
+  editIcon.classList.add("bi-pencil");
   editButton.appendChild(editIcon);
 
   let editText = document.createTextNode(" Edit");
